@@ -35,9 +35,17 @@ Este proyecto surge como una alternativa ligera, potente y gratuita para profesi
 
 ## **Instalación y Uso**
 
-1. **Requisitos:** Tener instalado Java JRE 17 o superior.  
-2. **Descarga:** Ve a la sección de [Releases](https://www.google.com/search?q=https://github.com/GamezConZ/OpenFusionView/releases) y descarga el archivo OpenFusionView.exe.  
-3. **Configuración:** Al abrir el programa, ve a **Settings**, selecciona tu carpeta de exportación DICOM y elige tu idioma preferido.
+**Opción 1: Windows (Portable, no requiere instalación - Recomendado)**
+No necesitas tener Java instalado en tu computadora para usar esta versión.
+1. Ve a la pestaña de [Releases](https://github.com/GamezConZ/calculadora-decaimiento/releases).
+2. Descarga y abre el archivo `OpenFusionView-XXX.exe`.
+
+**Opción 2: Universal / Linux / Mac (Requiere Java 21+)**
+1. Asegúrate de tener instalado Java 21 o superior (recomendamos [Eclipse Adoptium](https://adoptium.net/)).
+2.  Descarga el archivo `OpenFusionView-XXX.jar` desde la pestaña de [Releases](https://github.com/GamezConZ/calculadora-decaimiento/releases).
+3. Haz doble clic en el archivo `.jar` o ejecútalo desde la terminal:
+   ```bash
+   java -jar OpenFusionView-XXX.jar
 
 ## **Licencia**
 
