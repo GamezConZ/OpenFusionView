@@ -14,4 +14,4 @@ public class SeriesRecord {
         this.date = date;
         this.folderPath = path;
     }
-}
+} 

@@ -7,4 +7,4 @@ public enum ViewPlane {
     AXIAL,
     CORONAL,
     SAGITTAL
-}
+} 

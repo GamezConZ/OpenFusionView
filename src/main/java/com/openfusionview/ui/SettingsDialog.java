@@ -96,4 +96,4 @@ public class SettingsDialog extends JDialog {
         btnPanel.add(btnCancel);
         add(btnPanel, BorderLayout.SOUTH);
     }
-}
+} 

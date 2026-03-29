@@ -412,4 +412,4 @@ public class SlicePanel extends JPanel {
             drawShadowText(g2d, bottomText, 10, panelHeight - 15);
         }
     }
-}
+} 

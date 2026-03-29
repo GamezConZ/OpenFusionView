@@ -23,4 +23,4 @@ public class AppConfig {
     public static void setLanguage(String lang) {
         prefs.put(LANGUAGE_KEY, lang);
     }
-}
+} 
