@@ -37,12 +37,12 @@ Este proyecto surge como una alternativa ligera, potente y gratuita para profesi
 
 **Opción 1: Windows (Portable, no requiere instalación - Recomendado)**
 No necesitas tener Java instalado en tu computadora para usar esta versión.
-1. Ve a la pestaña de [Releases](https://github.com/GamezConZ/calculadora-decaimiento/releases).
+1. Ve a la pestaña de [Releases](https://github.com/GamezConZ/OpenFusionView/releases).
 2. Descarga y abre el archivo `OpenFusionView-XXX.exe`.
 
 **Opción 2: Universal / Linux / Mac (Requiere Java 21+)**
 1. Asegúrate de tener instalado Java 21 o superior (recomendamos [Eclipse Adoptium](https://adoptium.net/)).
-2.  Descarga el archivo `OpenFusionView-XXX.jar` desde la pestaña de [Releases](https://github.com/GamezConZ/calculadora-decaimiento/releases).
+2.  Descarga el archivo `OpenFusionView-XXX.jar` desde la pestaña de [Releases](https://github.com/GamezConZ/OpenFusionView/releases).
 3. Haz doble clic en el archivo `.jar` o ejecútalo desde la terminal:
    ```bash
    java -jar OpenFusionView-XXX.jar
@@ -54,6 +54,6 @@ Este proyecto está bajo la **Licencia MIT**. Eres libre de usarlo, modificarlo 
 ## **Autor**
 
 Desarrollado por **Carlos Gamez**.  
-GitHub: [@GamezConZ](https://www.google.com/search?q=https://github.com/GamezConZ)
+GitHub: [@GamezConZ](https://github.com/GamezConZ)
 
 *Nota: Este software se proporciona "tal cual", con fines educativos y de soporte a la investigación. Siempre valide los hallazgos críticos en una estación de trabajo certificada por las autoridades sanitarias de su país.*
