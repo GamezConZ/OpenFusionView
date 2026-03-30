@@ -171,7 +171,7 @@ public class SlicePanel extends JPanel {
         return "";
     }
 
-    // --- NUEVO: Obtener valor del píxel en la coordenada 3D exacta ---
+
     private double getPixelValueAtCrosshair(ImagePlus vol) {
         if (vol == null) return 0.0;
         int x = (int) Math.round(normX * (vol.getWidth() - 1));
@@ -253,31 +253,43 @@ public class SlicePanel extends JPanel {
     }
 
     private ImageProcessor extractSlice(ImagePlus img, int targetSlice) {
-        if (plane == ViewPlane.AXIAL) return img.getStack().getProcessor(targetSlice);
-
         int w = img.getWidth(), h = img.getHeight(), d = img.getStackSize();
         ImageStack stack = img.getStack();
 
-        if (plane == ViewPlane.CORONAL) {
+        if (plane == ViewPlane.AXIAL) {
+            FloatProcessor fp = new FloatProcessor(w, h);
+            ImageProcessor ip = stack.getProcessor(targetSlice);
+            for (int y = 0; y < h; y++) {
+                for (int x = 0; x < w; x++) {
+                    fp.putPixelValue(x, y, ip.getPixelValue(x, y));
+                }
+            }
+            return fp;
+            
+        } else if (plane == ViewPlane.CORONAL) {
             FloatProcessor fp = new FloatProcessor(w, d);
             int y = targetSlice - 1; 
             for (int z = 1; z <= d; z++) {
                 ImageProcessor ip = stack.getProcessor(z);
-                for (int x = 0; x < w; x++) fp.putPixelValue(x, z - 1, ip.getPixelValue(x, y));
+                for (int x = 0; x < w; x++) {
+                    fp.putPixelValue(x, z - 1, ip.getPixelValue(x, y));
+                }
             }
             return fp;
-        } else { 
+            
+        } else { // SAGITTAL
             FloatProcessor fp = new FloatProcessor(h, d);
             int x = targetSlice - 1;
             for (int z = 1; z <= d; z++) {
                 ImageProcessor ip = stack.getProcessor(z);
-                for (int y = 0; y < h; y++) fp.putPixelValue(y, z - 1, ip.getPixelValue(x, y));
+                for (int y = 0; y < h; y++) {
+                    fp.putPixelValue(y, z - 1, ip.getPixelValue(x, y));
+                }
             }
             return fp;
         }
     }
 
-    // Dibuja texto con sombra para contraste en fondos blancos o negros
     private void drawShadowText(Graphics2D g2d, String text, int x, int y) {
         g2d.setColor(Color.BLACK);
         g2d.drawString(text, x + 1, y + 1);
@@ -289,6 +301,7 @@ public class SlicePanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g); 
         Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
         if (volume == null) {
             if (!isExporting) {

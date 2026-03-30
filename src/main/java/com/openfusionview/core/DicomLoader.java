@@ -26,18 +26,49 @@ public class DicomLoader {
         ImagePlus volume = null;
 
         if (fileOrDir.isDirectory()) {
-            // Typical for CT: A folder full of individual 2D .dcm slices
-            volume = FolderOpener.open(path);
+            volume = ij.plugin.FolderOpener.open(path);
         } else if (fileOrDir.isFile()) {
-            // Typical for SPECT: A single multi-frame .dcm file
-            Opener opener = new Opener();
+            ij.io.Opener opener = new ij.io.Opener();
             volume = opener.openImage(path);
         }
 
         if (volume != null) {
+            // Extracción segura de la modalidad
+            String info = (String) volume.getProperty("Info");
+            boolean isNM = false;
+            
+            if (info != null) {
+                String[] lines = info.split("\n");
+                for (String line : lines) {
+                    if (line.contains("0008,0060")) {
+                        if (line.contains("NM") || line.contains("PT")) {
+                            isNM = true;
+                        }
+                        break; 
+                    }
+                }
+            }
+
+            // Si es NM, aplicamos la corrección espacial definitiva deducida de la prueba clínica
+            if (isNM) {
+                ij.ImageStack stack = volume.getStack();
+                ij.ImageStack correctedStack = new ij.ImageStack(stack.getWidth(), stack.getHeight());
+                
+                // Invertir eje Z
+                for (int i = stack.getSize(); i >= 1; i--) {
+                    ij.process.ImageProcessor ip = stack.getProcessor(i).duplicate();
+                    
+                    ip.flipVertical();   // Corrección eje Y (Espejo Y)
+                    ip.flipHorizontal(); // Corrección eje X (Espejo X) - NUEVO
+                    
+                    correctedStack.addSlice(stack.getSliceLabel(i), ip);
+                }
+                volume.setStack(correctedStack);
+                System.out.println(">> ÉXITO: Orientación SPECT corregida (Espejo Z + Y + X).");
+            }
+
             System.out.println("--- Volume Loaded Successfully ---");
             System.out.println("Title: " + volume.getTitle());
-            // Width x Height x Depth (Number of slices/frames)
             System.out.println("Dimensions (WxHxD): " + 
                                volume.getWidth() + "x" + 
                                volume.getHeight() + "x" + 

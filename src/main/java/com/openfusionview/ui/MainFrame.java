@@ -70,7 +70,7 @@ public class MainFrame extends JFrame {
         for (int i = 0; i < 256; i++) inv[i] = (byte) (255 - i); 
         this.invGrayLut = new LUT(8, 256, inv, inv, inv);
 
-        setTitle("OpenFusion View - v0.0.2");
+        setTitle("OpenFusion View - v0.0.3");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1200, 900);
         setLocationRelativeTo(null);
@@ -100,7 +100,15 @@ public class MainFrame extends JFrame {
         JButton btnExport = new JButton(new FlatSVGIcon("icons/export.svg", 24, 24));
         JButton btnBrowser = new JButton(new FlatSVGIcon("icons/browser.svg", 24, 24));
         JButton btnConfig = new JButton(new FlatSVGIcon("icons/settings.svg", 24, 24));
-        
+        JButton btnRotateNM = new JButton(new FlatSVGIcon("icons/sync.svg", 24, 24));
+        btnRotateNM.setToolTipText(bundle.getString("toolbar.rotate_nm"));
+
+        btnRotateNM.addActionListener(e -> rotateSpectVolume());
+
+        JButton btnTiltNM = new JButton(new FlatSVGIcon("icons/tilt.svg", 24, 24));
+        btnTiltNM.setToolTipText("Rotar 3D Eje Z (T)");
+        btnTiltNM.addActionListener(e -> tiltSpectVolume());
+        JButton btnFlipX = new JButton(new FlatSVGIcon("icons/arrows_output.svg", 24, 24));
 
         JButton btnPreset1 = new JButton(new FlatSVGIcon("icons/bone.svg", 24, 24));
         JButton btnPreset2 = new JButton(new FlatSVGIcon("icons/soft_tissue.svg", 24, 24));
@@ -150,7 +158,7 @@ public class MainFrame extends JFrame {
 
         btnAbout.addActionListener(e -> {
             String aboutHtml = "<html><body style='font-family: Arial; text-align: center; color: white; width: 350px;'>"
-                             + "<h2>" + bundle.getString("app.title") + "</h2>"
+                             + "<h2>OpenFusion View - v0.0.3</h2>"
                              + "<p>An open-source medical imaging viewer for CT and SPECT fusion.</p>"
                              + "<br>"
                              + "<p>Created by: <b>Carlos Gamez</b></p>"
@@ -184,6 +192,9 @@ public class MainFrame extends JFrame {
         btnCrosshair.addActionListener(e -> updateInteractionModes());
         btnWindowLevel.addActionListener(e -> updateInteractionModes());
 
+        btnFlipX.setToolTipText("Espejar X (H)");
+        btnFlipX.addActionListener(e -> flipSpectX());
+
         toolBar.add(btnBrowser);
         toolBar.add(Box.createHorizontalStrut(5));
         toolBar.add(btnConfig);
@@ -213,6 +224,15 @@ public class MainFrame extends JFrame {
         toolBar.add(Box.createHorizontalGlue());
         toolBar.add(btnAbout);
 
+        toolBar.add(btnRotateNM);
+        toolBar.add(Box.createHorizontalStrut(5));
+
+        toolBar.add(btnTiltNM);
+        toolBar.add(Box.createHorizontalStrut(5));
+
+        toolBar.add(btnFlipX);
+        toolBar.add(Box.createHorizontalStrut(5));
+
         add(toolBar, BorderLayout.NORTH);
     }
 
@@ -226,6 +246,30 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 btnCrosshair.setSelected(true);
                 updateInteractionModes();
+            }
+        });
+
+        im.put(KeyStroke.getKeyStroke("T"), "tiltNM");
+        am.put("tiltNM", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tiltSpectVolume();
+            }
+        });
+
+        im.put(KeyStroke.getKeyStroke("R"), "rotateNM");
+        am.put("rotateNM", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                rotateSpectVolume();
+            }
+        });
+
+        im.put(KeyStroke.getKeyStroke("H"), "flipX");
+        am.put("flipX", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                flipSpectX();
             }
         });
 
@@ -489,6 +533,57 @@ public class MainFrame extends JFrame {
         centerContainer.repaint();
     }
 
+    private void rotateSpectVolume() {
+        if (spectVolume == null) return;
+        ij.ImageStack stack = spectVolume.getStack();
+        ij.ImageStack rotatedStack = new ij.ImageStack(stack.getHeight(), stack.getWidth());
+        for (int i = 1; i <= stack.getSize(); i++) {
+                ij.process.ImageProcessor ip = stack.getProcessor(i);
+                rotatedStack.addSlice(stack.getSliceLabel(i), ip.rotateLeft());
+            }
+
+        spectVolume.setStack(rotatedStack);
+        
+ 
+        buildGrid(is3x3); 
+        System.out.println(">> Rotación manual aplicada al volumen SPECT.");
+    }
+
+    private void tiltSpectVolume() {
+        if (spectVolume == null) return;
+
+        ij.ImageStack stack = spectVolume.getStack();
+        int w = stack.getWidth();
+        int h = stack.getHeight();
+        int d = stack.getSize();
+
+        ij.ImageStack reslicedStack = new ij.ImageStack(w, d);
+
+        for (int y = 0; y < h; y++) {
+            ij.process.FloatProcessor newSlice = new ij.process.FloatProcessor(w, d);
+            for (int z = 1; z <= d; z++) {
+                ij.process.ImageProcessor oldSlice = stack.getProcessor(z);
+                for (int x = 0; x < w; x++) {
+                    newSlice.putPixelValue(x, z - 1, oldSlice.getPixelValue(x, y));
+                }
+            }
+            reslicedStack.addSlice("", newSlice);
+        }
+
+        spectVolume.setStack(reslicedStack);
+        buildGrid(is3x3);
+        System.out.println(">> Rotación 3D (Reslice Y-Z) aplicada al volumen SPECT.");
+    }
+
+    private void flipSpectX() {
+        if (spectVolume == null) return;
+        ij.ImageStack stack = spectVolume.getStack();
+        for (int i = 1; i <= stack.getSize(); i++) {
+            stack.getProcessor(i).flipHorizontal();
+        }
+        buildGrid(is3x3);
+        System.out.println(">> Espejo X aplicado al volumen SPECT.");
+    }
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(new FlatDarkLaf());

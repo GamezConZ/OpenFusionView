@@ -4,8 +4,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.openfusionview</groupId>
-  <artifactId>viewer</artifactId>
-  <version>0.0.2</version>
+  <artifactId>OpenFusionView</artifactId>
+  <version>0.0.3</version>
 
   <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -47,32 +47,6 @@
                                     <mainClass>com.openfusionview.ui.MainFrame</mainClass>
                                 </transformer>
                             </transformers>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>com.akathist.maven.plugins.launch4j</groupId>
-                <artifactId>launch4j-maven-plugin</artifactId>
-                <version>2.4.1</version>
-                <executions>
-                    <execution>
-                        <id>l4j-clui</id>
-                        <phase>package</phase>
-                        <goals><goal>launch4j</goal></goals>
-                        <configuration>
-                            <headerType>gui</headerType>
-                            <outfile>${project.build.directory}/OpenFusionView.exe</outfile>
-                            <jar>${project.build.directory}/${project.build.finalName}.jar</jar>
-                            <errTitle>OpenFusion Error</errTitle>
-                            <classPath>
-                                <mainClass>com.openfusionview.ui.MainFrame</mainClass>
-                            </classPath>
-                            <jre>
-                                <path>%JAVA_HOME%</path>
-                                <minVersion>17.0.0</minVersion>
-                            </jre>
                         </configuration>
                     </execution>
                 </executions>
