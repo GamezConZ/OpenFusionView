@@ -18,7 +18,6 @@ public class SettingsDialog extends JDialog {
     public SettingsDialog(JFrame parent) {
         super(parent, true); 
         
-        // Cargar idioma actual
         Locale currentLocale = Locale.of(AppConfig.getLanguage());
         this.bundle = ResourceBundle.getBundle("messages", currentLocale);
         
@@ -30,7 +29,6 @@ public class SettingsDialog extends JDialog {
         JPanel mainPanel = new JPanel(new GridLayout(2, 2, 10, 15));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
-        // Ruta
         mainPanel.add(new JLabel(bundle.getString("settings.root_folder")));
         JPanel pathPanel = new JPanel(new BorderLayout(5, 0));
         txtPath = new JTextField(AppConfig.getDicomRoot());
@@ -46,13 +44,16 @@ public class SettingsDialog extends JDialog {
         pathPanel.add(btnBrowse, BorderLayout.EAST);
         mainPanel.add(pathPanel);
 
-        // Idioma
         mainPanel.add(new JLabel(bundle.getString("settings.language")));
         langMap = new LinkedHashMap<>();
         langMap.put("English", "en");
         langMap.put("Español", "es");
         langMap.put("Português", "pt");
         langMap.put("Français", "fr");
+        langMap.put("Italiano", "it");
+        langMap.put("Deutsch", "de");
+        langMap.put("العربية (Arabic)", "ar");
+        langMap.put("हिन्दी (Hindi)", "hi");
         langMap.put("中文 (Chinese)", "zh");
         langMap.put("日本語 (Japanese)", "ja");
 
@@ -69,7 +70,6 @@ public class SettingsDialog extends JDialog {
 
         add(mainPanel, BorderLayout.CENTER);
 
-        // Botones
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton btnSave = new JButton(bundle.getString("settings.save"));
         JButton btnCancel = new JButton(bundle.getString("settings.cancel"));
@@ -96,4 +96,4 @@ public class SettingsDialog extends JDialog {
         btnPanel.add(btnCancel);
         add(btnPanel, BorderLayout.SOUTH);
     }
-} 
+}

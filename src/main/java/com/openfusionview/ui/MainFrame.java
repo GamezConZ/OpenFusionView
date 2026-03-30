@@ -70,7 +70,7 @@ public class MainFrame extends JFrame {
         for (int i = 0; i < 256; i++) inv[i] = (byte) (255 - i); 
         this.invGrayLut = new LUT(8, 256, inv, inv, inv);
 
-        setTitle(bundle.getString("app.title"));
+        setTitle("OpenFusion View - v0.0.2");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1200, 900);
         setLocationRelativeTo(null);
