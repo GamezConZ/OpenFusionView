@@ -1,4 +1,4 @@
-# **OpenFusion View (v0.0.1)**
+# **OpenFusion View (v0.0.2)**
 
 **OpenFusion View** is an open-source medical imaging visualization workstation designed for nuclear medicine and advanced radiological analysis. It features real-time Multiplanar Reconstruction (MPR) and image fusion of Computed Tomography (CT) and SPECT (NM).
 
@@ -66,7 +66,7 @@ GitHub: [@GamezConZ](https://github.com/GamezConZ)
 
 ---
 
-# **OpenFusion View (v0.0.1)**
+# **OpenFusion View (v0.0.2)**
 
 **OpenFusion View** es una estación de trabajo de visualización médica de código abierto diseñada para la medicina nuclear y el análisis radiológico avanzado. Permite la reconstrucción multiplanar (MPR) en tiempo real y la fusión de imágenes de Tomografía Computada (CT) y SPECT (NM).
 

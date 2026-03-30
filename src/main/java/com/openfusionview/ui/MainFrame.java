@@ -1,5 +1,6 @@
 package com.openfusionview.ui;
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.openfusionview.core.AppConfig;
 import com.openfusionview.core.DicomLoader;
@@ -91,24 +92,52 @@ public class MainFrame extends JFrame {
         toolBar.setFloatable(false); 
         toolBar.setMargin(new Insets(5, 10, 5, 10));
 
-        btnCrosshair = new JToggleButton(bundle.getString("toolbar.crosshair"), true); 
-        btnWindowLevel = new JToggleButton(bundle.getString("toolbar.windowlevel"), false);
+        btnCrosshair = new JToggleButton(new FlatSVGIcon("icons/crosshair.svg", 24, 24), true); 
+        btnWindowLevel = new JToggleButton(new FlatSVGIcon("icons/wl.svg", 24, 24), false);
+        
+        JButton btnLayout2x3 = new JButton(new FlatSVGIcon("icons/layout2x3.svg", 24, 24));
+        JButton btnLayout3x3 = new JButton(new FlatSVGIcon("icons/layout3x3.svg", 24, 24));
+        JButton btnExport = new JButton(new FlatSVGIcon("icons/export.svg", 24, 24));
+        JButton btnBrowser = new JButton(new FlatSVGIcon("icons/browser.svg", 24, 24));
+        JButton btnConfig = new JButton(new FlatSVGIcon("icons/settings.svg", 24, 24));
+        
+
+        JButton btnPreset1 = new JButton(new FlatSVGIcon("icons/bone.svg", 24, 24));
+        JButton btnPreset2 = new JButton(new FlatSVGIcon("icons/soft_tissue.svg", 24, 24));
+        JButton btnPreset3 = new JButton(new FlatSVGIcon("icons/lung.svg", 24, 24));
+        JButton btnPreset4 = new JButton(new FlatSVGIcon("icons/brain.svg", 24, 24));
+
+
+        JButton btnAbout = new JButton(bundle.getString("toolbar.about")); 
 
         ButtonGroup modeGroup = new ButtonGroup();
         modeGroup.add(btnCrosshair);
         modeGroup.add(btnWindowLevel);
 
-        JButton btnLayout2x3 = new JButton(bundle.getString("toolbar.view2x3"));
-        JButton btnLayout3x3 = new JButton(bundle.getString("toolbar.view3x3"));
-        JButton btnExport = new JButton(bundle.getString("toolbar.export"));
-        JButton btnBrowser = new JButton(bundle.getString("toolbar.browser"));
-        JButton btnConfig = new JButton(bundle.getString("toolbar.settings"));
-        JButton btnAbout = new JButton(bundle.getString("toolbar.about")); 
+
+        btnBrowser.setToolTipText(bundle.getString("toolbar.browser"));
+        btnConfig.setToolTipText(bundle.getString("toolbar.settings"));
+        btnCrosshair.setToolTipText(bundle.getString("toolbar.crosshair"));
+        btnWindowLevel.setToolTipText(bundle.getString("toolbar.windowlevel"));
+        btnLayout2x3.setToolTipText(bundle.getString("toolbar.view2x3"));
+        btnLayout3x3.setToolTipText(bundle.getString("toolbar.view3x3"));
+        btnExport.setToolTipText(bundle.getString("toolbar.export"));
+        
+        btnPreset1.setToolTipText(bundle.getString("preset.bone"));
+        btnPreset2.setToolTipText(bundle.getString("preset.soft_tissue"));
+        btnPreset3.setToolTipText(bundle.getString("preset.lung"));
+        btnPreset4.setToolTipText(bundle.getString("preset.brain"));
+
 
         btnLayout2x3.addActionListener(e -> buildGrid(false));
         btnLayout3x3.addActionListener(e -> buildGrid(true));
         btnExport.addActionListener(e -> exportToJPEG());
         
+        btnPreset1.addActionListener(e -> applyCTWindowLevel(-500, 1500));  // W:2000 L:500
+        btnPreset2.addActionListener(e -> applyCTWindowLevel(-150, 250));   // W:400 L:50
+        btnPreset3.addActionListener(e -> applyCTWindowLevel(-1350, 150));  // W:1500 L:-600
+        btnPreset4.addActionListener(e -> applyCTWindowLevel(0, 80));       // W:80 L:40
+
         btnBrowser.addActionListener(e -> {
             BrowserDialog browser = new BrowserDialog(this);
             browser.setVisible(true);
@@ -134,13 +163,14 @@ public class MainFrame extends JFrame {
                              + "The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.<br><br>"
                              + "THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT."
                              + "</div>"
+                             + "<br><br>Icons provided by Google (Material Symbols) under Apache License 2.0.<br><br>"
                              + "</body></html>";
                              
             JEditorPane ep = new JEditorPane("text/html", aboutHtml);
             ep.setEditable(false);
             ep.setOpaque(false);
             ep.addHyperlinkListener(hle -> {
-                if (HyperlinkEvent.EventType.ACTIVATED.equals(hle.getEventType())) {
+                if (javax.swing.event.HyperlinkEvent.EventType.ACTIVATED.equals(hle.getEventType())) {
                     try {
                         Desktop.getDesktop().browse(new URI(hle.getURL().toString()));
                     } catch (Exception ex) {
@@ -150,6 +180,9 @@ public class MainFrame extends JFrame {
             });
             JOptionPane.showMessageDialog(this, ep, bundle.getString("toolbar.about"), JOptionPane.INFORMATION_MESSAGE);
         });
+
+        btnCrosshair.addActionListener(e -> updateInteractionModes());
+        btnWindowLevel.addActionListener(e -> updateInteractionModes());
 
         toolBar.add(btnBrowser);
         toolBar.add(Box.createHorizontalStrut(5));
@@ -161,6 +194,15 @@ public class MainFrame extends JFrame {
         toolBar.add(btnWindowLevel);
         toolBar.addSeparator(new Dimension(20, 0));
         
+        toolBar.add(btnPreset1);
+        toolBar.add(Box.createHorizontalStrut(5));
+        toolBar.add(btnPreset2);
+        toolBar.add(Box.createHorizontalStrut(5));
+        toolBar.add(btnPreset3);
+        toolBar.add(Box.createHorizontalStrut(5));
+        toolBar.add(btnPreset4);
+        toolBar.addSeparator(new Dimension(20, 0));
+
         toolBar.add(btnLayout2x3);
         toolBar.add(Box.createHorizontalStrut(5));
         toolBar.add(btnLayout3x3);
@@ -170,9 +212,6 @@ public class MainFrame extends JFrame {
         
         toolBar.add(Box.createHorizontalGlue());
         toolBar.add(btnAbout);
-
-        btnCrosshair.addActionListener(e -> updateInteractionModes());
-        btnWindowLevel.addActionListener(e -> updateInteractionModes());
 
         add(toolBar, BorderLayout.NORTH);
     }
