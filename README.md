@@ -1,6 +1,6 @@
 [English Version](#english-version) | [Versión en Español](#versión-en-español)
 
-\<a id="english-version"\>\</a\>
+<a id="english-version"\></a\>
 
 # **OpenFusion View (v0.0.3)**
 
@@ -76,7 +76,10 @@ Developed by **Carlos Gamez**.
 GitHub: [@GamezConZ](https://github.com/GamezConZ)  
 
 *Disclaimer: This software is provided "as is" for educational, research, and workflow support purposes. Always validate critical diagnostic findings on a workstation certified by your country's health authorities.*  
-\<a id="versión-en-español"\>\</a\>
+
+----------------------------------
+
+<a id="versión-en-español"\></a\>
 
 # **OpenFusion View (v0.0.3)**
 
