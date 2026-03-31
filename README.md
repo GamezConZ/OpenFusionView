@@ -1,7 +1,3 @@
-[English Version](#english-version) | [Versión en Español](#versión-en-español)
-
-<a id="english-version"\></a\>
-
 # **OpenFusion View (v0.0.3)**
 
 In many nuclear medicine and radiology departments, clinical workflows are bottlenecked by a limited number of expensive, proprietary workstations. **OpenFusion View** is built to break that bottleneck.  
@@ -77,9 +73,9 @@ GitHub: [@GamezConZ](https://github.com/GamezConZ)
 
 *Disclaimer: This software is provided "as is" for educational, research, and workflow support purposes. Always validate critical diagnostic findings on a workstation certified by your country's health authorities.*  
 
-----------------------------------
-
-<a id="versión-en-español"\></a\>
+---
+---
+---
 
 # **OpenFusion View (v0.0.3)**
 
