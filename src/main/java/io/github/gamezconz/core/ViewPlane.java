@@ -1,4 +1,4 @@
-package com.openfusionview.core;
+package io.github.gamezconz.core;
 
 /**
  * Defines the anatomical planes for image reconstruction.

@@ -1,4 +1,4 @@
-package com.openfusionview;
+package io.github.gamezconz;
 
 /**
  * Hello world!

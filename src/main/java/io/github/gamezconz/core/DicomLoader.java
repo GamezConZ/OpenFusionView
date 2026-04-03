@@ -1,5 +1,4 @@
-package com.openfusionview.core;
-
+package io.github.gamezconz.core;
 import ij.ImagePlus;
 import ij.io.Opener;
 import ij.plugin.FolderOpener;

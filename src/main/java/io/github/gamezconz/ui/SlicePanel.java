@@ -1,6 +1,6 @@
-package com.openfusionview.ui;
+package io.github.gamezconz.ui;
 
-import com.openfusionview.core.ViewPlane;
+import io.github.gamezconz.core.ViewPlane;
 import ij.ImagePlus;
 import ij.ImageStack;
 import ij.measure.Calibration;

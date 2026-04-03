@@ -1,7 +1,7 @@
-package com.openfusionview.ui;
+package io.github.gamezconz.ui;
 
-import com.openfusionview.core.AppConfig;
-import com.openfusionview.core.SeriesRecord;
+import io.github.gamezconz.core.AppConfig;
+import io.github.gamezconz.core.SeriesRecord;
 import ij.ImagePlus;
 import ij.io.Opener;
 

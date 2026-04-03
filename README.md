@@ -1,4 +1,4 @@
-# **OpenFusion View (v0.0.3)**
+# **OpenFusion View (v0.0.4)**
 
 In many nuclear medicine and radiology departments, clinical workflows are bottlenecked by a limited number of expensive, proprietary workstations. **OpenFusion View** is built to break that bottleneck.  
 It is a lightweight, open-source SPECT/CT fusion viewer that transforms any standard hospital or research computer into a capable analysis terminal—without the need for additional costly licenses. Designed to complement existing infrastructure, it empowers physicians, physicists, and researchers to review, triangulate, and quantify studies seamlessly.  
@@ -77,7 +77,7 @@ GitHub: [@GamezConZ](https://github.com/GamezConZ)
 ---
 ---
 
-# **OpenFusion View (v0.0.3)**
+# **OpenFusion View (v0.0.4)**
 
 En muchos departamentos de medicina nuclear y radiología, el flujo de trabajo clínico se ve limitado por un número reducido de costosas estaciones de trabajo propietarias. **OpenFusion View** nace para eliminar ese cuello de botella.  
 Es un visor de fusión SPECT/CT de código abierto y ligero que transforma cualquier computadora estándar del hospital o centro de investigación en un terminal de análisis capaz, sin necesidad de licencias adicionales costosas. Diseñado para complementar la infraestructura existente, permite a médicos, físicos e investigadores revisar, triangular y cuantificar estudios de manera fluida.  

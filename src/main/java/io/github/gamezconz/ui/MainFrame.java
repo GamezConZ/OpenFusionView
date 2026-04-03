@@ -1,10 +1,10 @@
-package com.openfusionview.ui;
+package io.github.gamezconz.ui;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.FlatDarkLaf;
-import com.openfusionview.core.AppConfig;
-import com.openfusionview.core.DicomLoader;
-import com.openfusionview.core.ViewPlane;
+import io.github.gamezconz.core.AppConfig;
+import io.github.gamezconz.core.DicomLoader;
+import io.github.gamezconz.core.ViewPlane;
 import ij.ImagePlus;
 import ij.process.LUT;
 
@@ -75,7 +75,7 @@ public class MainFrame extends JFrame {
         for (int i = 0; i < 256; i++) inv[i] = (byte) (255 - i); 
         this.invGrayLut = new LUT(8, 256, inv, inv, inv);
 
-        setTitle("OpenFusion View - v0.0.3");
+        setTitle("OpenFusion View - v0.0.4");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1200, 900);
         setLocationRelativeTo(null);

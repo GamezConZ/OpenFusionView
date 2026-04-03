@@ -1,4 +1,4 @@
-package com.openfusionview.core;
+package io.github.gamezconz.core;
 
 import java.util.prefs.Preferences;
 

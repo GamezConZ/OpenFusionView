@@ -1,6 +1,6 @@
-package com.openfusionview.ui;
+package io.github.gamezconz.ui;
 
-import com.openfusionview.core.AppConfig;
+import io.github.gamezconz.core.AppConfig;
 
 import javax.swing.*;
 import java.awt.*;
