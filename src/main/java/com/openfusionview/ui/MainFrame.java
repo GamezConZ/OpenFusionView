@@ -30,6 +30,11 @@ public class MainFrame extends JFrame {
 
     private ImagePlus ctVolume;
     private ImagePlus spectVolume;
+
+    // Arreglo de porcentajes para el SPECT (100%, 75%, 50%, 33%, 20%, 10%)
+    private final double[] SPECT_PRESETS = {1.0, 0.75, 0.5, 0.33, 0.2, 0.1};
+    private int currentSpectPresetIndex = 0;
+
     private Map<String, SlicePanel> viewPanels;
     
     private LUT spectLut;      
@@ -101,6 +106,9 @@ public class MainFrame extends JFrame {
         JButton btnBrowser = new JButton(new FlatSVGIcon("icons/browser.svg", 24, 24));
         JButton btnConfig = new JButton(new FlatSVGIcon("icons/settings.svg", 24, 24));
         JButton btnRotateNM = new JButton(new FlatSVGIcon("icons/sync.svg", 24, 24));
+        JButton btnCycleNM = new JButton(new FlatSVGIcon("icons/speed.svg", 24, 24)); // Asegúrate de tener este ícono o usa otro existente
+        btnCycleNM.setToolTipText("Ciclar Intensidad SPECT (S)");
+        btnCycleNM.addActionListener(e -> cycleSpectPresets());
         btnRotateNM.setToolTipText(bundle.getString("toolbar.rotate_nm"));
 
         btnRotateNM.addActionListener(e -> rotateSpectVolume());
@@ -213,7 +221,9 @@ public class MainFrame extends JFrame {
         toolBar.add(Box.createHorizontalStrut(5));
         toolBar.add(btnPreset4);
         toolBar.addSeparator(new Dimension(20, 0));
-
+        toolBar.add(btnPreset4);
+        toolBar.addSeparator(new Dimension(20, 0));
+        toolBar.add(btnCycleNM); // <--- Tu nuevo botón aquí
         toolBar.add(btnLayout2x3);
         toolBar.add(Box.createHorizontalStrut(5));
         toolBar.add(btnLayout3x3);
@@ -254,6 +264,14 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 tiltSpectVolume();
+            }
+        });
+
+        im.put(KeyStroke.getKeyStroke("S"), "cycleSpect");
+        am.put("cycleSpect", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cycleSpectPresets();
             }
         });
 
@@ -583,6 +601,37 @@ public class MainFrame extends JFrame {
         }
         buildGrid(is3x3);
         System.out.println(">> Espejo X aplicado al volumen SPECT.");
+    }
+
+    private void cycleSpectPresets() {
+        if (spectVolume == null) return;
+
+        // 1. Obtener el máximo de cuentas real del estudio
+        double maxCounts = spectVolume.getStatistics().max;
+        
+        // 2. Calcular el porcentaje correspondiente
+        double percent = SPECT_PRESETS[currentSpectPresetIndex];
+        double newMax = maxCounts * percent;
+        
+        // 3. Preparar el índice para el próximo clic
+        currentSpectPresetIndex = (currentSpectPresetIndex + 1) % SPECT_PRESETS.length;
+
+        // 4. Aplicar el nuevo rango a los paneles correspondientes
+        for (SlicePanel panel : viewPanels.values()) {
+            String title = panel.getModalityTitle(); 
+            
+            if (title != null) {
+                if (title.equals(FUS_MOD)) {
+                    // En Fusión, solo alteramos la capa superpuesta (Overlay)
+                    panel.setOverlayWindowLevel(0, newMax);
+                } else if (title.equals(NM_MOD)) {
+                    // En SPECT puro, alteramos la imagen base
+                    panel.setWindowLevel(0, newMax);
+                }
+            }
+        }
+
+        System.out.println(">> Preset SPECT: " + (int)(percent * 100) + "% (Max Counts: " + (int)newMax + ")");
     }
     public static void main(String[] args) {
         try {

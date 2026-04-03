@@ -185,6 +185,9 @@ public class SlicePanel extends JPanel {
         return vol.getStack().getProcessor(z).getPixelValue(x, y);
     }
 
+    public String getModalityTitle() {
+        return this.modalityTitle;
+    }
     public double getNormX() { return normX; }
     public double getNormY() { return normY; }
     public double getNormZ() { return normZ; }
